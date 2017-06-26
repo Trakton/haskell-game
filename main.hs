@@ -39,6 +39,18 @@ gameCycle :: PongAction ()
 gameCycle = do
   (Score n) <- getGameAttribute
   printOnScreen (show n) TimesRoman24 (0,0) 1.0 1.0 1.0
+  ball <- findObject "ball" "ballGroup"
+  col1 <- objectLeftMapCollision ball
+  col2 <- objectRightMapCollision ball
+  when (col1 || col2) (reverseXSpeed ball)
+  col3 <- objectTopMapCollision ball
+  when col3 (reverseYSpeed ball)
+  col4 <- objectBottomMapCollision ball
+  when col4 (funExit)
+  bar <- findObject "bar" "barGroup"
+  col5 <- objectsCollision ball bar
+  when col5 (do reverseYSpeed ball
+                setGameAttribute (Score (n + 10)))
 
 main :: IO()
 main = do
