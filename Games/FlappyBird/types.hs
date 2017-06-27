@@ -1,12 +1,12 @@
 module Types(
-  GameAttribute(Score),
+  GameAttribute(GA),
   FBirdObject,
   FBirdAction
 ) where
 
 import Graphics.UI.Fungen
 
-data GameAttribute = Score Int
+data GameAttribute = GA Int [Char]
 
 type FBirdObject = GameObject ()
 type FBirdAction a = IOGame GameAttribute () () () a

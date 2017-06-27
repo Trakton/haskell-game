@@ -2,6 +2,9 @@ module Main where
 import Graphics.UI.Fungen
 import Types
 import Player
+import Textures
+import Variables
+import ObstacleManager
 
 gameCycle :: FBirdAction ()
 gameCycle = do
@@ -9,10 +12,10 @@ gameCycle = do
 
 main :: IO()
 main = do
-  let winConfig = ((0,0), (480, 320), "Flappy Bird")
-      bmpList = [("Sprites/tex.bmp", Nothing)]
+  let winConfig = ((0,0), windowResolution, "Flappy Bird")
       gameMap = textureMap 0 50 50 250.0 250.0
-      bird = objectGroup "player" [playerCreate]
+      player = objectGroup "player" [playerCreate]
+      walls = objectGroup "walls" createWalls
       input = [(SpecialKey KeyUp, Press, playerFly)]
-      initScore = Score 0
-  funInit winConfig gameMap [bird] () initScore input gameCycle (Timer 40) bmpList
+      startingAttributes = GA 0 "wall0"
+  funInit winConfig gameMap [player, walls] () startingAttributes input gameCycle (Timer 40) bmpList
