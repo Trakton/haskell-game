@@ -9,6 +9,7 @@ import ObstacleManager
 gameCycle :: FBirdAction ()
 gameCycle = do
   playerCycle
+  obstacleManagerCycle
 
 main :: IO()
 main = do
@@ -18,4 +19,4 @@ main = do
       walls = objectGroup "walls" createWalls
       input = [(SpecialKey KeyUp, Press, playerFly)]
       startingAttributes = GA 0 "wall0"
-  funInit winConfig gameMap [player, walls] () startingAttributes input gameCycle (Timer 40) bmpList
+  funInit winConfig gameMap [player, walls] (Level 0) startingAttributes input gameCycle (Timer 40) bmpList
