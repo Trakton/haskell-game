@@ -12,7 +12,7 @@ main = do
   let winConfig = ((0,0), (480, 320), "Flappy Bird")
       bmpList = [("Sprites/tex.bmp", Nothing)]
       gameMap = textureMap 0 50 50 250.0 250.0
-      bird = objectGroup "birdGroup" [playerCreate]
+      bird = objectGroup "player" [playerCreate]
       input = [(SpecialKey KeyUp, Press, playerFly)]
       initScore = Score 0
   funInit winConfig gameMap [bird] () initScore input gameCycle (Timer 40) bmpList
