@@ -10,9 +10,9 @@ gameCycle = do
 main :: IO()
 main = do
   let winConfig = ((0,0), (480, 320), "Flappy Bird")
-      bmpList = [("tex.bmp", Nothing)]
+      bmpList = [("Sprites/tex.bmp", Nothing)]
       gameMap = textureMap 0 50 50 250.0 250.0
       bird = objectGroup "birdGroup" [playerCreate]
       input = [(SpecialKey KeyUp, Press, playerFly)]
-      initScore = GameAttribute
+      initScore = Score 0
   funInit winConfig gameMap [bird] () initScore input gameCycle (Timer 40) bmpList
