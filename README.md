@@ -16,6 +16,4 @@ $ cabal install FunGEn
 
 To compile a game, cd to it's folder and run:
 
-ghc main.hs
-
-./main
+ghc main.hs -outputdir="bin" && ./main
