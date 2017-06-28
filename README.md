@@ -1,4 +1,4 @@
-# haskell-game
+# Flappy Bird
 
 To run the games, you must have Cabal installed in your OS. You can get it here:
 
@@ -14,6 +14,12 @@ $ cabal update
 
 $ cabal install FunGEn 
 
-To compile a game, cd to it's folder and run:
+To compile the game, cd to FlappyBird folder and run:
 
 ghc main.hs -outputdir="bin" && ./main
+
+# How to play:
+
+The game has 3 levels. You are going to level up each at score 5, 10 and 15.
+
+Controls : Press the up arrow key to control the bird and to pass the menu scenes.
