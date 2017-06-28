@@ -10,14 +10,15 @@ import Textures
 import Wall
 
 wall1Speed = -10
-wall1Hole = 100
-minWallY = 100;
+wall1Hole = 125
+minWallY = 100
 maxWallY = fromIntegral((snd windowResolution) - 100)
 
 createFloor :: [FBirdObject]
-createFloor = let sprite = Tex textureFloorSize textureFloorIndex
-              in [(object "bottomFloor" sprite False (floorBottomPosition) (0,0) ()),
-                  (object "upperFloor" sprite False floorUpperPosition (0,0) ())]
+createFloor = let spriteFloor = Tex textureFloorSize textureFloorIndex
+                  spriteCeil = Tex textureFloorSize textureCeilIndex
+              in [(object "bottomFloor" spriteFloor False (floorBottomPosition) (0,0) ()),
+                  (object "upperFloor" spriteCeil False floorUpperPosition (0,0) ())]
 
 setObjectsAsleep :: [FBirdObject] -> Bool -> Int -> FBirdAction ()
 setObjectsAsleep _ _ 0 = return ()
@@ -66,10 +67,11 @@ restartWalls (x:xs) l k = do
 
 createWalls :: [FBirdObject]
 createWalls = let sprite = Tex textureWallSize textureWallIndex
+                  sprite2 = Tex textureWallSize textureWall2Index
               in [(object "wall11" sprite True (0, (wallFindUpPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed,0) ()),
                   (object "wall12" sprite True (0, (wallFindDownPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed, 0) ()),
-                  (object "wall21" sprite True (0, (wallFindUpPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed,0) ()),
-                  (object "wall22" sprite True (0, (wallFindDownPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed, 0) ()),
+                  (object "wall21" sprite2 True (0, (wallFindUpPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed,0) ()),
+                  (object "wall22" sprite2 True (0, (wallFindDownPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed, 0) ()),
                   (object "wall31" sprite True (0, (wallFindUpPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed, 0) ()),
                   (object "wall32" sprite True (0, (wallFindDownPosition ((snd windowResolution)`div`2) wall1Hole)) (wall1Speed, 0) ())]
 

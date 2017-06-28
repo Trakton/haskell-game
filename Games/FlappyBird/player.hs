@@ -7,15 +7,16 @@ module Player(
 import Graphics.UI.Fungen
 import Types
 import Variables
+import Textures
 import ObstacleManager
 
 flySpeed = 10.0
 maxFallSpeed = -10.0
-startPosition = (((fst windowResolution)`div`8), ((snd windowResolution)`div`2))
+startPosition = (fromIntegral((fst windowResolution)`div`8), fromIntegral((snd windowResolution)`div`2))
 
 playerCreate :: FBirdObject
-playerCreate = let sprite = Basic(Circle 7.5 0.0 1.0 0.0 Filled)
-               in object "player" sprite False (256, 307.5) (0, 0) ()
+playerCreate = let sprite = Tex texturePlayerSize texturePlayerIndex
+               in object "player" sprite False startPosition (0, 0) ()
 
 playerFly :: Modifiers -> Position -> FBirdAction ()
 playerFly _ _ = do
