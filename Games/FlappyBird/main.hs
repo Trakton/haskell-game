@@ -14,20 +14,14 @@ gameCycle = do
   showScore
   gs <- getGameState
   case gs of
-    LevelStart n -> do disableMapDrawing
-                       level <- findObject ("level"++(show n)) "msgs"
-                       drawObject level
+    LevelStart n -> do printOnScreen (printf "Level %d" n) TimesRoman24 middleScreen 1.0 1.0 1.0
     Level n -> do (GA score _ _) <- getGameAttribute
-                  when (score >= n*n) (do
+                  when (score >= 5*n) (do
                   if(n < 3) then do setGameState (LevelStart (n+1))
                   else do setGameState (Win)
                                      )
-    GameOver -> do gameover <- findObject "gameover" "msgs"
-                   disableMapDrawing
-                   drawObject gameover
-    Win -> do win <- findObject "win" "msgs"
-              disableMapDrawing
-              drawObject win
+    GameOver -> do printOnScreen (printf "GAMEOVER!") TimesRoman24 middleScreen 1.0 1.0 1.0
+    Win -> do printOnScreen (printf "VOCÊ GANHOU!") TimesRoman24 middleScreen 1.0 1.0 1.0
 
 stateControl :: Modifiers -> Position -> FBirdAction ()
 stateControl m p = do
@@ -52,11 +46,10 @@ showScore = do
 main :: IO()
 main = do
   let winConfig = ((0,0), windowResolution, "Flappy Bird")
-      gameMap = textureMap 0 50 50 250.0 250.0
+      gameMap = textureMap 0 (fst textureMapSize) (snd textureMapSize) 250.0 250.0
       walls = objectGroup "walls" createWalls
       player = objectGroup "player" [playerCreate]
-      msgs = objectGroup "msgs" createMsgs
       floor = objectGroup "floor" createFloor
       input = [(SpecialKey KeyUp, Press, stateControl)]
       startingAttributes = GA 0 ((snd windowResolution)`div`2) False
-  funInit winConfig gameMap [player, walls, msgs, floor] (LevelStart 1) startingAttributes input gameCycle (Timer 40) bmpList
+  funInit winConfig gameMap [player, walls, floor] (LevelStart 1) startingAttributes input gameCycle (Timer 40) bmpList

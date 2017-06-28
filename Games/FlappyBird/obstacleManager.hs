@@ -63,7 +63,7 @@ restartWalls (x:xs) l k = do
     restartWalls xs (l-1) k
   else do
     setGameAttribute (GA score lastWallY False)
-    restartWalls xs (l-1) (k+350)
+    restartWalls xs (l-1) (k+475)
 
 createWalls :: [FBirdObject]
 createWalls = let sprite = Tex textureWallSize textureWallIndex
