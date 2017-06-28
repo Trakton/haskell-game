@@ -5,22 +5,23 @@ import Player
 import Textures
 import Variables
 import ObstacleManager
+import Text.Printf
 
 gameCycle :: FBirdAction ()
 gameCycle = do
   playerCycle
   obstacleManagerCycle
+  showScore
   gs <- getGameState
   case gs of
-    LevelStart n -> do
-      case n of
-        4 -> do disableMapDrawing
-                win <- findObject "win" "msgs"
-                drawObject win
-        _ -> do disableMapDrawing
-                level <- findObject ("level"++(show n)) "msgs"
-                drawObject level
-    Level n -> do return()
+    LevelStart n -> do disableMapDrawing
+                       level <- findObject ("level"++(show n)) "msgs"
+                       drawObject level
+    Level n -> do (GA score _ _) <- getGameAttribute
+                  when (score >= n*n) (do
+                  if(n < 3) then do setGameState (LevelStart (n+1))
+                  else do setGameState (Win)
+                                     )
     GameOver -> do gameover <- findObject "gameover" "msgs"
                    disableMapDrawing
                    drawObject gameover
@@ -32,14 +33,21 @@ stateControl :: Modifiers -> Position -> FBirdAction ()
 stateControl m p = do
   gs <- getGameState
   case gs of
-    LevelStart n -> do
-      case n of
-        4 -> do funExit
-        _ -> do setGameState (Level (n))
-                drawMap
+    LevelStart n -> do setGameState (Level (n))
+                       drawMap
     Level n -> do playerFly m p
     GameOver -> funExit
     Win -> funExit
+
+showScore :: FBirdAction ()
+showScore = do
+  (GA score _ _) <- getGameAttribute
+  ga <- getGameState
+  case ga of
+    LevelStart n -> return()
+    Level n -> do printOnScreen (printf "Score: %d    Level: %d" score n) TimesRoman24 (40,(fromIntegral(snd windowResolution)-60)) 1.0 1.0 1.0
+    GameOver -> return()
+    Win -> return()
 
 main :: IO()
 main = do
@@ -50,5 +58,5 @@ main = do
       msgs = objectGroup "msgs" createMsgs
       floor = objectGroup "floor" createFloor
       input = [(SpecialKey KeyUp, Press, stateControl)]
-      startingAttributes = GA 0 ((snd windowResolution)`div`2)
+      startingAttributes = GA 0 ((snd windowResolution)`div`2) False
   funInit winConfig gameMap [player, walls, msgs, floor] (LevelStart 1) startingAttributes input gameCycle (Timer 40) bmpList

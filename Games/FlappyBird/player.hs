@@ -7,6 +7,7 @@ module Player(
 import Graphics.UI.Fungen
 import Types
 import Variables
+import ObstacleManager
 
 flySpeed = 10.0
 maxFallSpeed = -10.0
@@ -32,7 +33,8 @@ playerCycle = do
                   applyGravity
                   handleCollisions n
     GameOver -> do return()
-    Win -> do return()
+    Win -> do player <- findObject "player" "player"
+              setObjectAsleep True player
 
 applyGravity :: FBirdAction ()
 applyGravity = do
@@ -43,17 +45,12 @@ applyGravity = do
 handleCollisions :: Int -> FBirdAction ()
 handleCollisions level = do
   player <- findObject "player" "player"
-  upperFloor <- findObject "upperFloor" "floor"
-  downFloor <- findObject "bottomFloor" "floor"
-  topWall <- findObject ("wall"++show(level)++"1") "walls"
-  botWall <- findObject ("wall"++show(level)++"2") "walls"
-  topFloorCol <- objectsCollision upperFloor player
-  botFloorCol <- objectsCollision downFloor player
-  topWallCol <- objectsCollision topWall player
-  botWallCol <- objectsCollision botWall player
-  when (topFloorCol || botFloorCol || topWallCol || botWallCol) (do
-    setObjectSpeed (0,0) topWall
-    setObjectSpeed (0,0) botWall
+  floor <- getObjectsFromGroup "floor"
+  floorCol <- objectListObjectCollision floor player
+  walls <- getObjectsFromGroup "walls"
+  wallCol <- objectListObjectCollision walls player
+  when (floorCol || wallCol) (do
     setObjectSpeed (0,0) player
+    stopWalls walls (level*2)
     setGameState (GameOver)
-                                                                )
+                            )
