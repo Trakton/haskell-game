@@ -26,4 +26,4 @@ middleScreen :: (Double, Double)
 middleScreen = (fromIntegral((fst windowResolution)`div`2), fromIntegral((fst windowResolution)`div`2))
 
 gravity :: Double
-gravity = 0.75
+gravity = 1.0

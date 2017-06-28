@@ -39,8 +39,11 @@ obstacleManagerCycle = do
                   (ux, uy) <- getObjectPosition upWall
                   (dx, dy) <- getObjectPosition downWall
                   when (wallOffScreen ux) (do
-                    setObjectPosition (wallRightmostPosition, (wallFindUpPosition ((snd windowResolution)`div`2) wall1Hole)) upWall
-                    setObjectPosition (wallRightmostPosition, (wallFindDownPosition ((snd windowResolution)`div`2) wall1Hole)) downWall
+                    (GA score lastWallY) <- getGameAttribute
+                    let newY = ((lastWallY+(4*((snd windowResolution)`div`3)))`mod`(maxWallY-minWallY))+minWallY
+                    setObjectPosition (wallRightmostPosition, (wallFindUpPosition newY wall1Hole)) upWall
+                    setObjectPosition (wallRightmostPosition, (wallFindDownPosition newY wall1Hole)) downWall
+                    setGameAttribute (GA (score+1) newY)
                                           )
     GameOver -> do return()
     Win -> do return()

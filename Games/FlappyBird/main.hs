@@ -50,5 +50,5 @@ main = do
       msgs = objectGroup "msgs" createMsgs
       floor = objectGroup "floor" createFloor
       input = [(SpecialKey KeyUp, Press, stateControl)]
-      startingAttributes = GA 0
+      startingAttributes = GA 0 ((snd windowResolution)`div`2)
   funInit winConfig gameMap [player, walls, msgs, floor] (LevelStart 1) startingAttributes input gameCycle (Timer 40) bmpList

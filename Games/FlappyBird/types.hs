@@ -7,7 +7,7 @@ module Types(
 
 import Graphics.UI.Fungen
 
-data GameAttribute = GA Int
+data GameAttribute = GA Int Int
 data GameState = LevelStart Int | Level Int | GameOver | Win
 
 type FBirdObject = GameObject ()

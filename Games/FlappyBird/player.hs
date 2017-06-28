@@ -8,8 +8,8 @@ import Graphics.UI.Fungen
 import Types
 import Variables
 
-flySpeed = 7.5
-maxFallSpeed = -7.5
+flySpeed = 10.0
+maxFallSpeed = -10.0
 startPosition = (((fst windowResolution)`div`8), ((snd windowResolution)`div`2))
 
 playerCreate :: FBirdObject

@@ -2,7 +2,7 @@ module Wall(
   wallFindUpPosition,
   wallFindDownPosition,
   wallOffScreen,
-  wallRightmostPosition, wallLeftmostPosition,
+  wallRightmostPosition, wallLeftmostPosition, 
   floorBottomPosition, floorUpperPosition
 ) where
 
