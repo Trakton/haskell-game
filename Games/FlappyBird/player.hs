@@ -23,10 +23,32 @@ playerFly _ _ = do
 
 playerCycle :: FBirdAction ()
 playerCycle = do
-  applyGravity
+  gs <- getGameState
+  case gs of
+    Level n -> do applyGravity
+                  handleCollisions n
+    GameOver -> do return()
 
 applyGravity :: FBirdAction ()
 applyGravity = do
   player <- findObject "player" "player"
   (x, y) <- getObjectSpeed player
   when (y > maxFallSpeed) (do setObjectSpeed (x, (y-gravity)) player)
+
+handleCollisions :: Int -> FBirdAction ()
+handleCollisions level = do
+  player <- findObject "player" "player"
+  upperFloor <- findObject "upperFloor" "floor"
+  downFloor <- findObject "bottomFloor" "floor"
+  topWall <- findObject ("wall"++show(level)++"1") "walls"
+  botWall <- findObject ("wall"++show(level)++"2") "walls"
+  topFloorCol <- objectsCollision upperFloor player
+  botFloorCol <- objectsCollision downFloor player
+  topWallCol <- objectsCollision topWall player
+  botWallCol <- objectsCollision botWall player
+  when (topFloorCol || botFloorCol || topWallCol || botWallCol) (do
+    setObjectSpeed (0,0) topWall
+    setObjectSpeed (0,0) botWall
+    setObjectSpeed (0,0) player
+    setGameState (GameOver)
+                                                                )
