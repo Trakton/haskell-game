@@ -25,9 +25,14 @@ playerCycle :: FBirdAction ()
 playerCycle = do
   gs <- getGameState
   case gs of
-    Level n -> do applyGravity
+    LevelStart n -> do player <- findObject "player" "player"
+                       setObjectAsleep True player
+    Level n -> do player <- findObject "player" "player"
+                  setObjectAsleep False player
+                  applyGravity
                   handleCollisions n
     GameOver -> do return()
+    Win -> do return()
 
 applyGravity :: FBirdAction ()
 applyGravity = do
