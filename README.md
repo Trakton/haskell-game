@@ -1,6 +1,8 @@
 # Flappy Bird
 
-To run the games, you must have Cabal installed in your OS. You can get it here:
+That's a simple game made in a pure functional programming language.
+
+To run the game, you must have Cabal installed in your OS. You can get it here:
 
 https://www.haskell.org/cabal/download.html
 
